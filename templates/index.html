@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Extractor de Texto de YouTube</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
+    <script>
+        async function extractText() {
+            const url = document.getElementById('videoUrl').value;
+            const response = await fetch('http://127.0.0.1:5000/extract_text', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ url: url })
+            });
+            const data = await response.json();
+            console.log(data.text);
+            document.getElementById('result').innerText = data.text;
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h1>Extractor de Texto de YouTube</h1>
+        <form onsubmit="event.preventDefault(); extractText();">
+            <label for="videoUrl">URL del Video de YouTube:</label>
+            <input type="text" id="videoUrl" name="videoUrl" required>
+            <button type="submit">Extraer Texto</button>
+        </form>
+        <div class="result-container">
+            <h2>Texto Extraído:</h2>
+            <pre id="result"></pre>
+        </div>
+    </div>
+</body>
+</html>
